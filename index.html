@@ -45,10 +45,10 @@
   .wrap{max-width:520px;margin:0 auto;}
   .eyebrow{
     letter-spacing:6px;
-    font-size:12px;
-    font-weight:700;
-    color:var(--muted);
-    margin-bottom:10px;
+    font-size:20px;
+    font-weight:800;
+    color:var(--accent);
+    margin-bottom:12px;
   }
   h1{
     font-family:Georgia,'Times New Roman',serif;
@@ -351,13 +351,13 @@ $('createBtn').addEventListener('click', () => {
   const marginX = 50;
   const tableX = marginX;
   const tableW = pageW - marginX*2;
-  const footerY = pageH-70;
+  const footerY = pageH-82;
   const footerLineY = footerY - 20;
 
   let y = 70;
-  doc.setTextColor(...muted);
+  doc.setTextColor(...gold);
   doc.setFont(FONT_SANS,'bold');
-  doc.setFontSize(11);
+  doc.setFontSize(20);
   doc.text('S T U D I O G L A S S', marginX, y);
 
   y += 34;
@@ -431,15 +431,20 @@ $('createBtn').addEventListener('click', () => {
 
   doc.setDrawColor(...cardBorder);
   doc.line(tableX, footerLineY, tableX+tableW, footerLineY);
+  doc.setFont(FONT_SANS,'bold');
+  doc.setFontSize(15);
+  doc.setTextColor(...gold);
+  doc.text('STUDIOGLASS', tableX, footerY);
+  doc.setFontSize(12.5);
+  doc.setTextColor(...cream);
+  doc.text('WhatsApp: +7 777 560 95 52', tableX, footerY+19);
+  doc.text('Instagram: @studioglass.kz', tableX, footerY+37);
   doc.setFont(FONT_SANS,'normal');
   doc.setFontSize(10);
   doc.setTextColor(...muted);
-  doc.text('STUDIOGLASS', tableX, footerY);
-  doc.text('WhatsApp: +7 777 560 95 52', tableX, footerY+14);
-  doc.text('Instagram: @studioglass.kz', tableX, footerY+28);
   doc.text(todayStr(), tableX+tableW, footerY, {align:'right'});
-  doc.text('Стр. 1 из 1', tableX+tableW, footerY+14, {align:'right'});
-  doc.text('Создано в gashe', tableX+tableW, footerY+28, {align:'right'});
+  doc.text('Стр. 1 из 1', tableX+tableW, footerY+19, {align:'right'});
+  doc.text('Создано в gashe', tableX+tableW, footerY+37, {align:'right'});
 
   const filename = `KP_StudioGlass_${Date.now()}.pdf`;
   const blob = doc.output('blob');
