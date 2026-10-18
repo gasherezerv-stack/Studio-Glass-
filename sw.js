@@ -1,5 +1,5 @@
 // Bump this version string on every deploy to force clients to pick up new files.
-const CACHE = 'studioglass-v3';
+const CACHE = 'studioglass-v4';
 const ASSETS = [
   './',
   './index.html',
