@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#0B1F3A">
+<meta name="theme-color" content="#0A36A0">
 <title>StudioGlass — Расчёт душевой кабины</title>
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icons/icon-192.png">
@@ -14,22 +14,29 @@
 <script src="fonts.js"></script>
 <style>
   :root{
-    --bg:#0B1F3A;
-    --card:#112B4F;
-    --input-bg:#143259;
-    --border:#2A4A75;
-    --cream:#F2F6FB;
-    --muted:#8FA9C9;
-    --accent:#FFFFFF;
-    --accent-dark:#D9E3F0;
+    --bg:#0A36A0;
+    --card:#1046C2;
+    --input-bg:#1A55D6;
+    --border:#5C8DF5;
+    --cream:#FFFFFF;
+    --muted:#C2D6FF;
+    --accent:#FFB547;
+    --accent-dark:#E8952A;
+    --cta:linear-gradient(135deg,#FFC45E,#FF8A2B);
+    --cta-text:#2A1400;
+    --cta-shadow:rgba(255,150,40,.45);
+    --glow:radial-gradient(130% 55% at 50% 0%, rgba(100,160,255,.5), rgba(0,0,0,0) 72%);
     --maroon-bg:#47201F;
     --maroon-text:#E2827A;
-    --divider:#2A4A75;
+    --divider:#5C8DF5;
   }
   *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
   html,body{margin:0;padding:0;}
+  html{background:var(--bg);}
   body{
     background:var(--bg);
+    background-image:var(--glow);
+    background-repeat:no-repeat;
     color:var(--cream);
     font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
     min-height:100vh;
@@ -92,16 +99,18 @@
     appearance:none;
     -webkit-appearance:none;
   }
-  input::placeholder{color:#5F7FA6;}
+  input::placeholder{color:#8FB2F5;}
   input:focus, select:focus{border-color:var(--accent);}
   select{
     font-size:17px;
-    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'><path d='M1 1l6 6 6-6' stroke='%238FA9C9' stroke-width='2' fill='none' stroke-linecap='round'/></svg>");
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'><path d='M1 1l6 6 6-6' stroke='%23C2D6FF' stroke-width='2' fill='none' stroke-linecap='round'/></svg>");
     background-repeat:no-repeat;
     background-position:right 16px center;
     padding-right:40px;
   }
   .summary{
+    background:linear-gradient(160deg,rgba(255,255,255,.10),rgba(255,255,255,.02));
+    box-shadow:0 12px 32px rgba(0,0,0,.25);
     margin-top:30px;
     border:1.5px solid var(--border);
     border-radius:18px;
@@ -125,14 +134,15 @@
   .summary-row .val{color:var(--cream); font-weight:600;}
   .summary-row .val.dim{color:var(--muted); font-weight:400;}
   .divider{height:1px; background:var(--divider); margin:8px 0;}
-  .summary-row.total{font-size:22px; font-weight:800;}
+  .summary-row.total{font-size:22px; font-weight:800; margin-top:14px; padding:16px 18px; border:2px solid var(--accent); border-radius:14px; background:rgba(255,181,71,.10); box-shadow:0 0 22px rgba(255,181,71,.28), inset 0 0 14px rgba(255,181,71,.10);}
   .summary-row.total .label{font-family:Georgia,serif;}
   .summary-row.total .val{color:var(--accent);}
   button.cta{
     width:100%;
     margin-top:28px;
-    background:var(--accent);
-    color:#0B1F3A;
+    background:var(--cta);
+    color:var(--cta-text);
+    box-shadow:0 10px 28px var(--cta-shadow);
     border:none;
     padding:20px;
     font-size:17px;
@@ -141,7 +151,7 @@
     border-radius:16px;
     cursor:pointer;
   }
-  button.cta:active{background:var(--accent-dark);}
+  button.cta:active{filter:brightness(.92);}
   button.cta:disabled{opacity:.5; cursor:not-allowed;}
   .hint{
     font-size:12px;
@@ -317,16 +327,26 @@ $('createBtn').addEventListener('click', () => {
   const FONT_SANS = 'DejaVuSans';
   const FONT_SERIF_BOLD = 'DejaVuSerifBold';
 
-  const bg = [11,31,58];
-  const cream = [242,246,251];
-  const muted = [143,169,201];
-  const gold = [255,255,255];
-  const cardBorder = [42,74,117];
+  const bgTop = [24, 88, 220];
+  const bgBottom = [8, 38, 125];
+  const cream = [255, 255, 255];
+  const muted = [194, 214, 255];
+  const gold = [255, 181, 71];
+  const cardBorder = [92, 141, 245];
   const pageW = doc.internal.pageSize.getWidth();
   const pageH = doc.internal.pageSize.getHeight();
 
-  doc.setFillColor(...bg);
-  doc.rect(0,0,pageW,pageH,'F');
+  const BANDS = 90;
+  for(let i=0;i<BANDS;i++){
+    const t = i/(BANDS-1);
+    doc.setFillColor(
+      Math.round(bgTop[0]+(bgBottom[0]-bgTop[0])*t),
+      Math.round(bgTop[1]+(bgBottom[1]-bgTop[1])*t),
+      Math.round(bgTop[2]+(bgBottom[2]-bgTop[2])*t));
+    doc.rect(0, i*pageH/BANDS, pageW, pageH/BANDS+1, 'F');
+  }
+  doc.setFillColor(...gold);
+  doc.rect(0,0,pageW,6,'F');
 
   const marginX = 50;
   const tableX = marginX;
@@ -390,8 +410,10 @@ $('createBtn').addEventListener('click', () => {
   y = tableStartY + tableHeight + gapB;
   const cardY = y;
 
-  doc.setDrawColor(...cardBorder);
+  doc.setDrawColor(...gold);
+  doc.setLineWidth(2.5);
   doc.roundedRect(tableX, cardY, tableW, cardH, 16, 16);
+  doc.setLineWidth(0.75);
   doc.setFont(FONT_SANS,'bold');
   doc.setFontSize(12);
   doc.setTextColor(...muted);
